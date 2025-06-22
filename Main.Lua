@@ -4,6 +4,8 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
+local syn = getgenv().syn
+getgenv().syn = false
 
 local OrionLib = {
 	Elements = {},
@@ -1747,3 +1749,4 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
+getgenv().syn = syn
