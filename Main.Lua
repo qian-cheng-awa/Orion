@@ -1224,13 +1224,11 @@ function OrionLib:MakeWindow(WindowConfig)
 				end	
 
 				function Dropdown:Refresh(Options, Delete)
-					if Delete then
-						for _,v in pairs(Dropdown.Buttons) do
-							v:Destroy()
-						end    
-						table.clear(Dropdown.Options)
-						table.clear(Dropdown.Buttons)
-					end
+					for _,v in pairs(Dropdown.Buttons) do
+						v:Destroy()
+					end    
+					table.clear(Dropdown.Options)
+					table.clear(Dropdown.Buttons)
 					Dropdown.Options = Options
 					AddOptions(Dropdown.Options)
 				end  
@@ -1274,7 +1272,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					end
 				end)
 
-				Dropdown:Refresh(Dropdown.Options, false)
+				Dropdown:Refresh(Dropdown.Options)
 				Dropdown:Set(Dropdown.Value)
 				if DropdownConfig.Flag then				
 					OrionLib.Flags[DropdownConfig.Flag] = Dropdown
