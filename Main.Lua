@@ -1,4 +1,3 @@
---
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -1223,12 +1222,14 @@ function OrionLib:MakeWindow(WindowConfig)
 					end
 				end	
 
-				function Dropdown:Refresh(Options, Delete)
-					for _,v in pairs(Dropdown.Buttons) do
-						v:Destroy()
-					end    
-					table.clear(Dropdown.Options)
-					table.clear(Dropdown.Buttons)
+				function Dropdown:Refresh(Options,Del)
+					if Del == nil then
+						for _,v in pairs(Dropdown.Buttons) do
+							v:Destroy()
+						end    
+						table.clear(Dropdown.Options)
+						table.clear(Dropdown.Buttons)
+					end
 					Dropdown.Options = Options
 					AddOptions(Dropdown.Options)
 				end  
@@ -1272,7 +1273,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					end
 				end)
 
-				Dropdown:Refresh(Dropdown.Options)
+				Dropdown:Refresh(Dropdown.Options,true)
 				Dropdown:Set(Dropdown.Value)
 				if DropdownConfig.Flag then				
 					OrionLib.Flags[DropdownConfig.Flag] = Dropdown
