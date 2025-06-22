@@ -736,8 +736,9 @@ function OrionLib:MakeWindow(WindowConfig)
 	end	
 
 	local TabFunction = {}
-	function TabFunction:MakeTab(TabConfig)
+	function TabFunction:MakeTab(...)
 		local TabConfiga = {}
+		local TabConfig = {...}
 		TabConfiga.Name = TabConfig[1] or "Tab"
 		TabConfiga.Icon = TabConfig[2] or ""
 
@@ -1104,7 +1105,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				DropdownConfig = DropdownConfig or {}
 				DropdownConfig.MultipleOptions = DropdownConfig.MultipleOptions or false
 				DropdownConfig.Name = DropdownConfig.Name or "Dropdown"
-				DropdownConfig.Options = DropdownConfig.Options or {}
+				DropdownConfig.Options = typeof(DropdownConfig.Options) == "function" and DropdownConfig.Options() or DropdownConfig.Options or {}
 				DropdownConfig.Default = DropdownConfig.Default or ""
 				DropdownConfig.Callback = DropdownConfig.Callback or function() end
 				DropdownConfig.Flag = DropdownConfig.Flag or nil
@@ -1113,9 +1114,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				local Dropdown = {Value = DropdownConfig.Default, Options = DropdownConfig.Options, Buttons = {}, Toggled = false, Type = "Dropdown", Save = DropdownConfig.Save}
 				local MaxElements = 5
 
-				if not table.find(Dropdown.Options, Dropdown.Value) then
-					Dropdown.Value = {}
-				end
+				
 
 				local DropdownList = MakeElement("List")
 
@@ -1177,7 +1176,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				AddConnection(DropdownList:GetPropertyChangedSignal("AbsoluteContentSize"), function()
 					DropdownContainer.CanvasSize = UDim2.new(0, 0, 0, DropdownList.AbsoluteContentSize.Y)
 				end)  
-
+				
 				local function AddOptions(Options)
 					for _, Option in pairs(Options) do
 						local OptionBtn = AddThemeObject(SetProps(SetChildren(MakeElement("Button", Color3.fromRGB(40, 40, 40)), {
@@ -1235,7 +1234,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				end  
 
 				function Dropdown:Set(Value)
-					if typeof(Value) == "table" then
+					if Value and typeof(Value) == "table" then
 						Dropdown.Value = Value
 						for _, v in pairs(Dropdown.Buttons) do
 							TweenService:Create(v,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
