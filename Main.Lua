@@ -1103,6 +1103,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			end  
 			function ElementFunction:AddDropdown(DropdownConfig)
 				DropdownConfig = DropdownConfig or {}
+				DropdownConfig.MultipleOptions = DropdownConfig.MultipleOptions or false
 				DropdownConfig.Name = DropdownConfig.Name or "Dropdown"
 				DropdownConfig.Options = DropdownConfig.Options or {}
 				DropdownConfig.Default = DropdownConfig.Default or ""
@@ -1114,7 +1115,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				local MaxElements = 5
 
 				if not table.find(Dropdown.Options, Dropdown.Value) then
-					Dropdown.Value = "..."
+					Dropdown.Value = {}
 				end
 
 				local DropdownList = MakeElement("List")
@@ -1195,7 +1196,26 @@ function OrionLib:MakeWindow(WindowConfig)
 						}), "Divider")
 
 						AddConnection(OptionBtn.MouseButton1Click, function()
-							Dropdown:Set(Option)
+							
+							if DropdownConfig.MultipleOptions then
+								local tb = {}
+								for i,v in pairs(Dropdown.Value) do
+									tb[i] = v
+								end
+								if table.find(tb,Option) then
+									table.remove(tb,table.find(tb,Option))
+								else
+									table.insert(tb,Option)
+								end
+								Dropdown:Set(tb)
+							else
+								if Dropdown.Value[1] == Option then
+									Dropdown:Set({})
+								else
+									Dropdown:Set({Option})
+								end
+							end
+							
 							SaveCfg(game.GameId)
 						end)
 
@@ -1216,25 +1236,30 @@ function OrionLib:MakeWindow(WindowConfig)
 				end  
 
 				function Dropdown:Set(Value)
-					if not table.find(Dropdown.Options, Value) then
-						Dropdown.Value = "..."
-						DropdownFrame.F.Selected.Text = Dropdown.Value
+					if typeof(Value) == "table" then
+						Dropdown.Value = Value
 						for _, v in pairs(Dropdown.Buttons) do
 							TweenService:Create(v,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
 							TweenService:Create(v.Title,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{TextTransparency = 0.4}):Play()
 						end	
-						return
+						if Value[1] then
+							for i,v in pairs(Value) do
+								if Value[2] then
+									DropdownFrame.F.Selected.Text = "..."
+
+									TweenService:Create(Dropdown.Buttons[v],TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
+									TweenService:Create(Dropdown.Buttons[v].Title,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
+								else
+									DropdownFrame.F.Selected.Text = Dropdown.Value[1]
+
+									TweenService:Create(Dropdown.Buttons[v],TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
+									TweenService:Create(Dropdown.Buttons[v].Title,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
+								end
+							end
+						else
+							DropdownFrame.F.Selected.Text = "None"
+						end
 					end
-
-					Dropdown.Value = Value
-					DropdownFrame.F.Selected.Text = Dropdown.Value
-
-					for _, v in pairs(Dropdown.Buttons) do
-						TweenService:Create(v,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 1}):Play()
-						TweenService:Create(v.Title,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{TextTransparency = 0.4}):Play()
-					end	
-					TweenService:Create(Dropdown.Buttons[Value],TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
-					TweenService:Create(Dropdown.Buttons[Value].Title,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
 					return DropdownConfig.Callback(Dropdown.Value)
 				end
 
