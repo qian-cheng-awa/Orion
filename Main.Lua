@@ -4,7 +4,7 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
-local gethui = gethui()
+
 
 local OrionLib = {
 	Elements = {},
@@ -53,7 +53,7 @@ if isstudio then
 	Orion.Parent = game.Players.LocalPlayer.PlayerGui
 else
 	pcall(function()
-		Orion.Parent = gethui() or game.CoreGui
+		Orion.Parent = game.CoreGui
 		if gethui then
 			for _, Interface in ipairs(gethui():GetChildren()) do
 				if Interface.Name == Orion.Name and Interface ~= Orion then
