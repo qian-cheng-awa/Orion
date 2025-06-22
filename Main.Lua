@@ -1,3 +1,4 @@
+--
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -73,7 +74,6 @@ end
 function OrionLib:IsRunning()
 	if isstudio then
 		return Orion.Parent == game.Players.LocalPlayer.PlayerGui
-
 	else
 		pcall(function()
 			if gethui then
@@ -88,9 +88,6 @@ function OrionLib:IsRunning()
 end
 
 local function AddConnection(Signal, Function)
-	if (not OrionLib:IsRunning()) then
-		return
-	end
 	local SignalConnect = Signal:Connect(Function)
 	table.insert(OrionLib.Connections, SignalConnect)
 	return SignalConnect
