@@ -1,3 +1,4 @@
+--
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -736,11 +737,10 @@ function OrionLib:MakeWindow(WindowConfig)
 	end	
 
 	local TabFunction = {}
-	function TabFunction:MakeTab(...)
+	function TabFunction:MakeTab(Name,Icon)
 		local TabConfiga = {}
-		local TabConfig = {...}
-		TabConfiga.Name = TabConfig[1] or "Tab"
-		TabConfiga.Icon = TabConfig[2] or ""
+		TabConfiga.Name = Name or "Tab"
+		TabConfiga.Icon = Icon or ""
 
 		local TabFrame = SetChildren(SetProps(MakeElement("Button"), {
 			Size = UDim2.new(1, 0, 0, 30),
