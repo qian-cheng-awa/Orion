@@ -1,3 +1,4 @@
+--
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -1069,12 +1070,12 @@ function OrionLib:MakeWindow(WindowConfig)
 				}), "Second")
 
 				SliderBar.InputBegan:Connect(function(Input)
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
 						Dragging = true 
 					end 
 				end)
 				SliderBar.InputEnded:Connect(function(Input) 
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then 
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then 
 						Dragging = false 
 					end 
 				end)
@@ -1306,7 +1307,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				end)
 
 				AddConnection(Click.InputEnded, function(Input)
-					if Input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
 						if Bind.Binding then return end
 						Bind.Binding = true
 						BindBox.Value.Text = ""
@@ -1583,7 +1584,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				local ColorInput
 				local HueInput
 				AddConnection(Color.InputBegan, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if ColorInput then
 							ColorInput:Disconnect()
 						end
@@ -1599,7 +1600,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				end)
 
 				AddConnection(Color.InputEnded, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if ColorInput then
 							ColorInput:Disconnect()
 						end
@@ -1607,7 +1608,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				end)
 
 				AddConnection(Hue.InputBegan, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if HueInput then
 							HueInput:Disconnect()
 						end;
@@ -1624,7 +1625,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				end)
 
 				AddConnection(Hue.InputEnded, function(input)
-					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+					if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
 						if HueInput then
 							HueInput:Disconnect()
 						end
