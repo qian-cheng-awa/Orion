@@ -738,8 +738,8 @@ function OrionLib:MakeWindow(WindowConfig)
 	local TabFunction = {}
 	function TabFunction:MakeTab(TabConfig)
 		TabConfig = TabConfig or {}
-		TabConfig.Name = TabConfig.Name or TabConfig[1] or "Tab"
-		TabConfig.Icon = TabConfig.Icon or TabConfig[2] or ""
+		TabConfig.Name = TabConfig[1] or "Tab"
+		TabConfig.Icon = TabConfig[2] or ""
 		TabConfig.PremiumOnly = TabConfig.PremiumOnly or false
 
 		local TabFrame = SetChildren(SetProps(MakeElement("Button"), {
@@ -1672,7 +1672,7 @@ function OrionLib:MakeWindow(WindowConfig)
 		local ElementFunction = {}
 
 		function ElementFunction:AddSection(SectionConfig)
-			SectionConfig.Name = SectionConfig.Name or SectionConfig[1] or "Section"
+			SectionConfig.Name = SectionConfig[1] or "Section"
 
 			local SectionFrame = SetChildren(SetProps(MakeElement("TFrame"), {
 				Size = UDim2.new(1, 0, 0, 26),
