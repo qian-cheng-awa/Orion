@@ -1,4 +1,3 @@
---
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -28,10 +27,10 @@ local OrionLib = {
 }
 
 --Feather Icons https://github.com/evoincorp/lucideblox/tree/master/src/modules/util - Created by 7kayoh
-local Icons = {}
+local Icons = {["256px"] = {}}
 
 local Success, Response = pcall(function()
-	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/evoincorp/lucideblox/master/src/modules/util/icons.json")).icons
+	Icons = HttpService:JSONDecode(game:HttpGetAsync("https://raw.githubusercontent.com/qian-cheng-awa/Orion/refs/heads/main/lucide"))
 end)
 
 if not Success then
@@ -39,8 +38,8 @@ if not Success then
 end	
 
 local function GetIcon(IconName)
-	if Icons[IconName] ~= nil then
-		return Icons[IconName]
+	if Icons["256px"][IconName] ~= nil then
+		return Icons["256px"][IconName][1]
 	else
 		return nil
 	end
@@ -706,7 +705,10 @@ function OrionLib:MakeWindow(WindowConfig)
 			ImageColor3 = Color3.fromRGB(255, 255, 255),
 			ImageTransparency = 1
 		})
-
+		SetChildren(LoadSequenceLogo, {
+			AddThemeObject(MakeElement("Stroke"), "Stroke"),
+			MakeElement("Corner", 0.05)
+		})
 		local LoadSequenceText = SetProps(MakeElement("Label", WindowConfig.IntroText, 14), {
 			Parent = Orion,
 			Size = UDim2.new(1, 0, 1, 0),
