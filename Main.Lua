@@ -4,8 +4,7 @@ local RunService = game:GetService("RunService")
 local LocalPlayer = game:GetService("Players").LocalPlayer
 local Mouse = LocalPlayer:GetMouse()
 local HttpService = game:GetService("HttpService")
-local syn = getgenv().syn
-getgenv().syn = false
+local gethui = gethui()
 
 local OrionLib = {
 	Elements = {},
@@ -54,12 +53,7 @@ if isstudio then
 	Orion.Parent = game.Players.LocalPlayer.PlayerGui
 else
 	pcall(function()
-		if syn then
-			syn.protect_gui(Orion)
-			Orion.Parent = game.CoreGui
-		else
-			Orion.Parent = gethui() or game.CoreGui
-		end
+		Orion.Parent = gethui() or game.CoreGui
 		if gethui then
 			for _, Interface in ipairs(gethui():GetChildren()) do
 				if Interface.Name == Orion.Name and Interface ~= Orion then
@@ -79,7 +73,7 @@ end
 function OrionLib:IsRunning()
 	if isstudio then
 		return Orion.Parent == game.Players.LocalPlayer.PlayerGui
-		
+
 	else
 		pcall(function()
 			if gethui then
@@ -89,7 +83,7 @@ function OrionLib:IsRunning()
 			end
 		end)
 	end
-	
+
 
 end
 
@@ -1749,4 +1743,3 @@ function OrionLib:Destroy()
 end
 
 return OrionLib
-getgenv().syn = syn
