@@ -1103,7 +1103,7 @@ function OrionLib:MakeWindow(WindowConfig)
 				DropdownConfig.MultipleOptions = DropdownConfig.MultipleOptions or false
 				DropdownConfig.Name = DropdownConfig.Name or "Dropdown"
 				DropdownConfig.Options = typeof(DropdownConfig.Options) == "function" and DropdownConfig.Options() or DropdownConfig.Options or {}
-				DropdownConfig.Default = DropdownConfig.Default or ""
+				DropdownConfig.Default = DropdownConfig.Default or {}
 				DropdownConfig.Callback = DropdownConfig.Callback or function() end
 				DropdownConfig.Flag = DropdownConfig.Flag or nil
 				DropdownConfig.Save = DropdownConfig.Save or false
@@ -1230,7 +1230,7 @@ function OrionLib:MakeWindow(WindowConfig)
 					AddOptions(Dropdown.Options)
 				end  
 
-				function Dropdown:Set(Value)
+				function Dropdown:Set(Value,dont)
 					if Value and typeof(Value) == "table" then
 						Dropdown.Value = Value
 						for _, v in pairs(Dropdown.Buttons) do
@@ -1239,12 +1239,11 @@ function OrionLib:MakeWindow(WindowConfig)
 						end	
 						if Value[1] then
 							for i,v in pairs(Value) do
-								if Value[2] then
+								if Value[2] and Dropdown.Buttons[v] then
 									DropdownFrame.F.Selected.Text = "..."
-
 									TweenService:Create(Dropdown.Buttons[v],TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
 									TweenService:Create(Dropdown.Buttons[v].Title,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{TextTransparency = 0}):Play()
-								else
+								elseif Dropdown.Buttons[v] then
 									DropdownFrame.F.Selected.Text = Dropdown.Value[1]
 
 									TweenService:Create(Dropdown.Buttons[v],TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{BackgroundTransparency = 0}):Play()
@@ -1255,9 +1254,12 @@ function OrionLib:MakeWindow(WindowConfig)
 							DropdownFrame.F.Selected.Text = "None"
 						end
 					end
-					return DropdownConfig.Callback(Dropdown.Value)
+					if not dont then
+						return DropdownConfig.Callback(Dropdown.Value)
+					end
+					
 				end
-
+				
 				AddConnection(Click.MouseButton1Click, function()
 					Dropdown.Toggled = not Dropdown.Toggled
 					DropdownFrame.F.Line.Visible = Dropdown.Toggled
@@ -1268,9 +1270,9 @@ function OrionLib:MakeWindow(WindowConfig)
 						TweenService:Create(DropdownFrame,TweenInfo.new(.15, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),{Size = Dropdown.Toggled and UDim2.new(1, 0, 0, DropdownList.AbsoluteContentSize.Y + 38) or UDim2.new(1, 0, 0, 38)}):Play()
 					end
 				end)
-
+				
 				Dropdown:Refresh(Dropdown.Options,true)
-				Dropdown:Set(Dropdown.Value)
+				Dropdown:Set(Dropdown.Value,true)
 				if DropdownConfig.Flag then				
 					OrionLib.Flags[DropdownConfig.Flag] = Dropdown
 				end
