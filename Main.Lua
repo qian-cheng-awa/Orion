@@ -1,3 +1,4 @@
+--
 local UserInputService = game:GetService("UserInputService")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
@@ -737,23 +738,22 @@ function OrionLib:MakeWindow(WindowConfig)
 
 	local TabFunction = {}
 	function TabFunction:MakeTab(TabConfig)
-		TabConfig = TabConfig or {}
-		TabConfig.Name = TabConfig[1] or "Tab"
-		TabConfig.Icon = TabConfig[2] or ""
-		TabConfig.PremiumOnly = TabConfig.PremiumOnly or false
+		local TabConfiga = {}
+		TabConfiga.Name = TabConfig[1] or "Tab"
+		TabConfiga.Icon = TabConfig[2] or ""
 
 		local TabFrame = SetChildren(SetProps(MakeElement("Button"), {
 			Size = UDim2.new(1, 0, 0, 30),
 			Parent = TabHolder
 		}), {
-			AddThemeObject(SetProps(MakeElement("Image", TabConfig.Icon), {
+			AddThemeObject(SetProps(MakeElement("Image", TabConfiga.Icon), {
 				AnchorPoint = Vector2.new(0, 0.5),
 				Size = UDim2.new(0, 18, 0, 18),
 				Position = UDim2.new(0, 10, 0.5, 0),
 				ImageTransparency = 0.4,
 				Name = "Ico"
 			}), "Text"),
-			AddThemeObject(SetProps(MakeElement("Label", TabConfig.Name, 14), {
+			AddThemeObject(SetProps(MakeElement("Label", TabConfiga.Name, 14), {
 				Size = UDim2.new(1, -35, 1, 0),
 				Position = UDim2.new(0, 35, 0, 0),
 				Font = Enum.Font.GothamSemibold,
@@ -762,8 +762,8 @@ function OrionLib:MakeWindow(WindowConfig)
 			}), "Text")
 		})
 
-		if GetIcon(TabConfig.Icon) ~= nil then
-			TabFrame.Ico.Image = GetIcon(TabConfig.Icon)
+		if GetIcon(TabConfiga.Icon) ~= nil then
+			TabFrame.Ico.Image = GetIcon(TabConfiga.Icon)
 		end	
 
 		local Container = AddThemeObject(SetChildren(SetProps(MakeElement("ScrollFrame", Color3.fromRGB(255, 255, 255), 5), {
@@ -1708,7 +1708,7 @@ function OrionLib:MakeWindow(WindowConfig)
 			ElementFunction[i] = v 
 		end
 
-		if TabConfig.PremiumOnly then
+		if TabConfiga.PremiumOnly then
 			for i, v in next, ElementFunction do
 				ElementFunction[i] = function() end
 			end    
